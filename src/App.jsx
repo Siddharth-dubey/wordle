@@ -15,6 +15,7 @@ function App() {
   const [grid, updateGrid] = useState(INIT_MATRIX);
   const [CHOOSEN_WORD, getNewWord] = useState('');
   const [status, setStatus] = useState('');
+  const [gameStatus, setGameStatus] = useState(false);
 
   useEffect(() => {
     getNewWord(getWord());
@@ -32,26 +33,67 @@ function App() {
   const handleKeyboardEvent = (key) => {
     if (key && pointer.x < SIZE) {
       let newGrid = [...grid];
-      newGrid[pointer.y][pointer.x] = { ...newGrid[pointer.x][pointer.y], value: key };
+      newGrid[pointer.y][pointer.x] = { ...newGrid[pointer.y][pointer.x], value: key };
       updateGrid(newGrid)
       setPointer({ ...pointer, x: pointer.x + 1 })
     }
   }
+  const handleDelete = () => {
+    if (pointer.x !== 0) {
+      let newGrid = [...grid];
+      newGrid[pointer.y][pointer.x - 1] = { ...newGrid[pointer.y][pointer.x - 1], value: '' };
+      setPointer({ ...pointer, x: pointer.x - 1 })
+      updateGrid(newGrid)
+    }
+
+  }
+
+  const colorRow = (wordStatsArray) => {
+    let newGrid = [...grid];
+    wordStatsArray.forEach((status, index) => {
+      newGrid[pointer.y][index] = { ...newGrid[pointer.y][index], type: status === 2 ? 'perfect' : (status === 1 ? 'good' : 'neutral') };
+    })
+    updateGrid(newGrid)
+  }
+
+
   const enterHandler = () => {
     if (pointer.x === SIZE && pointer.y < 6) {
       console.log('d')
       const finalWord = makeWord()
       if (isvalidWord(finalWord)) {
-
+        if (CHOOSEN_WORD === finalWord.toLowerCase()) {
+          setStatus('Wohoooo!!!! you are amazing!')
+          const wordStats = [2, 2, 2, 2, 2]
+          colorRow(wordStats)
+          setGameStatus(true);
+        } else {
+          const splits = CHOOSEN_WORD.split('');
+          const wordStats = finalWord.toLowerCase().split('').map((w, index) => {
+            if (w === CHOOSEN_WORD[index]) {
+              return 2;
+            } else if (splits.findIndex((s) => s === w) !== -1) {
+              return 1;
+            } else {
+              return 0;
+            }
+          })
+          colorRow(wordStats)
+          setPointer({ x: 0, y: pointer.y + 1 })
+        }
       } else {
-        setStatus('Invalid word. Go buy a dictionary!!')
+        setStatus('Disappointing!! Go buy a dictionary!!')
       }
-      setPointer({ x: 0, y: pointer.y + 1 })
+    }
+    if (pointer.y === 5 && pointer.x === SIZE) {
+      setGameStatus(true);
+      setStatus(`LOOSER!! . The word was ${CHOOSEN_WORD}`)
     }
 
   }
 
   console.log(CHOOSEN_WORD);
+  console.log(grid);
 
   return (
     <div className="App">
@@ -61,7 +103,9 @@ function App() {
       </div>
       <div className='status'>{status}</div>
       <DisplayGrid grid={grid} size={SIZE} />
-      <Keyboard enterEnabled={pointer.x === SIZE && pointer.y < 6} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
+      <div className={gameStatus ? 'disable-keys' : ''}>
+        <Keyboard enterEnabled={pointer.x === SIZE && pointer.y < 6} handleDelete={handleDelete} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
+      </div>
     </div>
 
   );
