@@ -87,7 +87,7 @@ function App() {
     }
     if (pointer.y === 5 && pointer.x === SIZE) {
       setGameStatus(true);
-      setStatus(`LOOSER!! . The word was ${CHOOSEN_WORD}`)
+      setStatus(`LOOSER!!. The word was "${CHOOSEN_WORD.toUpperCase()}"`)
     }
 
   }
