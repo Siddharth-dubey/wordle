@@ -16,6 +16,7 @@ function App() {
   const [CHOOSEN_WORD, getNewWord] = useState('');
   const [status, setStatus] = useState('');
   const [gameStatus, setGameStatus] = useState(false);
+  const [bkStatus, setBKStatus] = useState(false);
 
   useEffect(() => {
     getNewWord(getWord());
@@ -44,6 +45,7 @@ function App() {
       newGrid[pointer.y][pointer.x - 1] = { ...newGrid[pointer.y][pointer.x - 1], value: '' };
       setPointer({ ...pointer, x: pointer.x - 1 })
       updateGrid(newGrid)
+      setBKStatus(false);
     }
 
   }
@@ -59,7 +61,6 @@ function App() {
 
   const enterHandler = () => {
     if (pointer.x === SIZE && pointer.y < 6) {
-      console.log('d')
       const finalWord = makeWord()
       if (isvalidWord(finalWord)) {
         if (CHOOSEN_WORD === finalWord.toLowerCase()) {
@@ -78,11 +79,13 @@ function App() {
               return 0;
             }
           })
+          setStatus('');
           colorRow(wordStats)
           setPointer({ x: 0, y: pointer.y + 1 })
         }
       } else {
         setStatus('Disappointing!! Go buy a dictionary!!')
+        setBKStatus(true)
       }
     }
     if (pointer.y === 5 && pointer.x === SIZE) {
@@ -91,9 +94,6 @@ function App() {
     }
 
   }
-
-  console.log(CHOOSEN_WORD);
-  console.log(grid);
 
   return (
     <div className="App">
@@ -104,7 +104,7 @@ function App() {
       <div className='status'>{status}</div>
       <DisplayGrid grid={grid} size={SIZE} />
       <div className={gameStatus ? 'disable-keys' : ''}>
-        <Keyboard enterEnabled={pointer.x === SIZE && pointer.y < 6} handleDelete={handleDelete} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
+        <Keyboard highlightBackspace={bkStatus} enterEnabled={pointer.x === SIZE && pointer.y < 6} handleDelete={handleDelete} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
       </div>
     </div>
 

@@ -3,10 +3,9 @@
 
 export const Keyboard = (props) => {
 
-    const { clickHandler, enterHandler, enterEnabled, handleDelete } = props
+    const { clickHandler, enterHandler, enterEnabled, handleDelete, highlightBackspace } = props
 
     const handleClick = (e) => {
-        console.log('s')
         if (clickHandler && e.target.dataset.value) {
             clickHandler(e.target.dataset.value)
         }
@@ -52,7 +51,7 @@ export const Keyboard = (props) => {
                 <button className="key-item" data-value="B">B</button>
                 <button className="key-item" data-value="N">N</button>
                 <button className="key-item" data-value="M">M</button>
-                <button className="key-item" onClick={handleDelete}> &lt;&lt; </button>
+                <button className={highlightBackspace ? "key-item" + " enabled-bkp" : "key-item"} onClick={handleDelete}> &lt;&lt; </button>
 
             </div>
         </div>
