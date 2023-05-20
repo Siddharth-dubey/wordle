@@ -11,12 +11,41 @@ function App() {
     return { value: '', type: 'neutral' }
   }))
 
+  const KEYBOARD = {
+    Q: { value: 'Q', state: 0 },
+    W: { value: 'W', state: 0 },
+    E: { value: 'E', state: 0 },
+    R: { value: 'R', state: 0 },
+    T: { value: 'T', state: 0 },
+    Y: { value: 'Y', state: 0 },
+    U: { value: 'U', state: 0 },
+    I: { value: 'I', state: 0 },
+    O: { value: 'O', state: 0 },
+    P: { value: 'P', state: 0 },
+    A: { value: 'A', state: 0 },
+    S: { value: 'S', state: 0 },
+    D: { value: 'D', state: 0 },
+    F: { value: 'F', state: 0 },
+    G: { value: 'G', state: 0 },
+    H: { value: 'H', state: 0 },
+    J: { value: 'J', state: 0 },
+    K: { value: 'K', state: 0 },
+    L: { value: 'L', state: 0 },
+    Z: { value: 'Z', state: 0 },
+    X: { value: 'X', state: 0 },
+    C: { value: 'C', state: 0 },
+    V: { value: 'V', state: 0 },
+    B: { value: 'B', state: 0 },
+    N: { value: 'N', state: 0 },
+    M: { value: 'M', state: 0 }
+  }
+
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const [grid, updateGrid] = useState(INIT_MATRIX);
   const [CHOOSEN_WORD, getNewWord] = useState('');
   const [status, setStatus] = useState('');
   const [gameStatus, setGameStatus] = useState(false);
-  const [bkStatus, setBKStatus] = useState(false);
+  const [isInvalidWord, setInvalidWordError] = useState(false);
 
   useEffect(() => {
     getNewWord(getWord());
@@ -45,7 +74,7 @@ function App() {
       newGrid[pointer.y][pointer.x - 1] = { ...newGrid[pointer.y][pointer.x - 1], value: '' };
       setPointer({ ...pointer, x: pointer.x - 1 })
       updateGrid(newGrid)
-      setBKStatus(false);
+      setInvalidWordError(false);
     }
 
   }
@@ -58,6 +87,7 @@ function App() {
     updateGrid(newGrid)
   }
 
+  console.log(KEYBOARD['Q'].state)
 
   const enterHandler = () => {
     if (pointer.x === SIZE && pointer.y < 6) {
@@ -85,7 +115,7 @@ function App() {
         }
       } else {
         setStatus('Disappointing!! Go buy a dictionary!!')
-        setBKStatus(true)
+        setInvalidWordError(true)
       }
     }
     if (pointer.y === 5 && pointer.x === SIZE) {
@@ -96,15 +126,15 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App rotating-gradient">
       <div className="header">
         <div className='title'>Wordle 2.0</div>
         <div className='subtitle'>Made with &#9829; by Sid</div>
       </div>
       <div className='status'>{status}</div>
-      <DisplayGrid grid={grid} size={SIZE} />
+      <DisplayGrid pointer={pointer} isInvalidWord={isInvalidWord} grid={grid} size={SIZE} />
       <div className={gameStatus ? 'disable-keys' : ''}>
-        <Keyboard highlightBackspace={bkStatus} enterEnabled={pointer.x === SIZE && pointer.y < 6} handleDelete={handleDelete} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
+        <Keyboard KEYBOARD={KEYBOARD} highlightBackspace={isInvalidWord} enterEnabled={pointer.x === SIZE && pointer.y < 6} handleDelete={handleDelete} clickHandler={handleKeyboardEvent} enterHandler={enterHandler} />
       </div>
     </div>
 

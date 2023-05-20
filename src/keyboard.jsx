@@ -1,9 +1,13 @@
 
-
+const Key = (props) => {
+    const { state } = props
+    console.log(state)
+    return <button className={`key-item status-${state}`} data-value={props.children}>{props.children}</button>
+}
 
 export const Keyboard = (props) => {
 
-    const { clickHandler, enterHandler, enterEnabled, handleDelete, highlightBackspace } = props
+    const { KEYBOARD, clickHandler, enterHandler, enterEnabled, handleDelete, highlightBackspace } = props
 
     const handleClick = (e) => {
         if (clickHandler && e.target.dataset.value) {
@@ -20,37 +24,37 @@ export const Keyboard = (props) => {
     return (
         <div className="keyboard-grid" onClick={handleClick}>
             <div className="keys-row">
-                <button className="key-item" data-value="Q">Q</button>
-                <button className="key-item" data-value="W">W</button>
-                <button className="key-item" data-value="E">E</button>
-                <button className="key-item" data-value="R">R</button>
-                <button className="key-item" data-value="T">T</button>
-                <button className="key-item" data-value="Y">Y</button>
-                <button className="key-item" data-value="U">U</button>
-                <button className="key-item" data-value="I">I</button>
-                <button className="key-item" data-value="O">O</button>
-                <button className="key-item" data-value="P">P</button>
+                <Key state={KEYBOARD['Q'].state}>Q</Key>
+                <Key state={KEYBOARD['W'].state}>W</Key>
+                <Key state={KEYBOARD['E'].state}>E</Key>
+                <Key state={KEYBOARD['R'].state}>R</Key>
+                <Key state={KEYBOARD['T'].state}>T</Key>
+                <Key state={KEYBOARD['Y'].state}>Y</Key>
+                <Key state={KEYBOARD['U'].state}>U</Key>
+                <Key state={KEYBOARD['I'].state}>I</Key>
+                <Key state={KEYBOARD['O'].state}>O</Key>
+                <Key state={KEYBOARD['P'].state}>P</Key>
             </div>
             <div className="keys-row">
-                <button className="key-item" data-value="A">A</button>
-                <button className="key-item" data-value="S">S</button>
-                <button className="key-item" data-value="D">D</button>
-                <button className="key-item" data-value="F">F</button>
-                <button className="key-item" data-value="G">G</button>
-                <button className="key-item" data-value="H">H</button>
-                <button className="key-item" data-value="J">J</button>
-                <button className="key-item" data-value="K">K</button>
-                <button className="key-item" data-value="L">L</button>
+                <Key state={KEYBOARD['A'].state}>A</Key>
+                <Key state={KEYBOARD['S'].state}>S</Key>
+                <Key state={KEYBOARD['D'].state}>D</Key>
+                <Key state={KEYBOARD['F'].state}>F</Key>
+                <Key state={KEYBOARD['G'].state}>G</Key>
+                <Key state={KEYBOARD['H'].state}>H</Key>
+                <Key state={KEYBOARD['J'].state}>J</Key>
+                <Key state={KEYBOARD['K'].state}>K</Key>
+                <Key state={KEYBOARD['L'].state}>L</Key>
             </div>
             <div className="keys-row">
                 <button className={enterEnabled ? "key-item" + " enabled-btn" : "key-item"} disabled={!enterEnabled} onClick={handleEnter}>ENTER</button>
-                <button className="key-item" data-value="Z">Z</button>
-                <button className="key-item" data-value="X">X</button>
-                <button className="key-item" data-value="C">C</button>
-                <button className="key-item" data-value="V">V</button>
-                <button className="key-item" data-value="B">B</button>
-                <button className="key-item" data-value="N">N</button>
-                <button className="key-item" data-value="M">M</button>
+                <Key state={KEYBOARD['Z'].state}>Z</Key>
+                <Key state={KEYBOARD['X'].state}>X</Key>
+                <Key state={KEYBOARD['C'].state}>C</Key>
+                <Key state={KEYBOARD['V'].state}>V</Key>
+                <Key state={KEYBOARD['B'].state}>B</Key>
+                <Key state={KEYBOARD['N'].state}>N</Key>
+                <Key state={KEYBOARD['M'].state}>M</Key>
                 <button className={highlightBackspace ? "key-item" + " enabled-bkp" : "key-item"} onClick={handleDelete}> &lt;&lt; </button>
 
             </div>

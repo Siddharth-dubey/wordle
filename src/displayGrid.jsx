@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 
 
 const Row = (props) => {
@@ -11,11 +12,11 @@ const Row = (props) => {
 
 
 export const DisplayGrid = (props) => {
-    const { grid } = props
+    const { grid, pointer, isInvalidWord } = props
 
     return (
         <div>{grid.length && grid.map((row, index) => {
-            return <div className="grid-row" key={index} >
+            return <div className={!(isInvalidWord && pointer.y === index) ? "grid-row" : "grid-row shake"} key={index} >
                 <Row key={index} row={row} />
             </div>
         })}</div>
